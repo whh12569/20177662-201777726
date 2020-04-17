@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>家族树</title>
+
+      <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui/css/layui.css" />
+      <style>
+        body{
+    background: #2F4056;
+}
+#title{
+    margin-top: 20px;
+    font-size: 45px;
+    color: #01AAED;
+    font-family: 华文行楷;
+    margin-left: 5%;
+
+
+}
+hr{
+    background: #FFB800;
+    height: 4px;
+    margin: 0px auto;
+    width: 90%;
+
+}
+#input{
+    margin-top: 50px;
+}
+.center{
+    margin: auto;
+    width: 60%;
+}
+#textarea{
+
+    border-radius: 0px 0px 5px 5px;
+}
+
+.layui-input-block{
+    margin: auto;
+}
+.layui-btn{
+    margin-left: 30%;
+    width: 150px;
+}
+
+.layui-card{
+    margin:  auto;
+    width: 60%;
+    margin-top: 50px;
+    border-radius: 10px;
+    filter: drop-shadow(10px 10px 10px rgba(0,0,0,.5));
+    /*考虑浏览器兼容性：兼容 Chrome, Safari, Opera */
+    -webkit-filter: drop-shadow(10px 10px 10px rgba(0,0,0,.5));
+}
+      </style>
+<!--      <link rel="stylesheet" type="text/css" href="css/layui.css" />-->
+</head>
+<body>
+  <div id="title">
+    <i class="layui-icon layui-icon-tree" style="font-size: 50px; color: #5FB878;"></i>
+    家族树
+  </div>
+  <hr>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://www.layuicdn.com/layui/layui.js"></script>
+
+<!--  <script src="js/layui.all.js"></script>-->
+<div class="center">
+  <div class="layui-form layui-form-pane">
+    <div id="input" class="layui-form-item layui-form-text">
+      <label class="layui-form-label" pane>家族信息输入</label>
+      <div class="layui-input-block">
+        <textarea id="textarea" name="textarea" required lay-verify="required" placeholder="请输入家族成员信息..." class="layui-textarea"></textarea>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" id="but">立即提交</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+  <div class="layui-card">
+    <div class="layui-card-header">家族成员信息</div>
+    <div class="layui-card-body">
+      <div id="tree" ></div><br>
+    </div>
+  </div>
+
+
+  <script>
+
+            document.querySelector("#but").addEventListener('click',function () {
+              let value = document.querySelector("textarea").value;
+              $.post("/getTree",{data:value},function (res) {
+                console.log(res)
+                layui.use('tree', function(){
+                  var tree = layui.tree;
+
+                  //渲染
+                  var inst1 = tree.render({
+                    elem: '#tree'  //绑定元素
+                    ,data: [res]
+                  });
+                });
+              },"json")
+            })
+  </script>
+
+
+
+</body>
+</html>
